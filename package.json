@@ -1,0 +1,13 @@
+{
+  "name": "elm_shop",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "devDependencies": {
+    "node-elm-compiler": "^5.0.1",
+    "sass": "^1.14.3"
+  },
+  "dependencies": {
+    "parcel-bundler": "^1.10.3"
+  }
+}
