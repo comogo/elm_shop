@@ -16,6 +16,18 @@ To run the project in development mode execute the following commands:
 
 Now open the http://localhost:1234 url on your browser.
 
+## Test
+
+I use [`elm-test`](https://github.com/rtfeldman/node-test-runner/tree/0.19) 
+to run tests on Elm. 
+You can run tests with the following commands:
+
+```
+yarn test # run the whole suite
+yarn test tests/Foo.elm # run a single file
+yarn test --watch # enable the watch mode
+```
+
 ## Production
 
 Before generating the production bundle remove the **dist** folder.
