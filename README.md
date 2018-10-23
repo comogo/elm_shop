@@ -23,3 +23,5 @@ Before generating the production bundle remove the **dist** folder.
 1. `yarn install`
 2. `rm -rf dist`
 3. `yarn build`
+
+The production ready files will be founded under the dist directory.
