@@ -1,5 +1,10 @@
-import { Elm } from './elm/Main.elm';
+if (module.hot) {
+  module.hot.dispose(() => {
+    window.location.reload();
+  });
+}
 
-Elm.Main.init({
-  node: document.getElementById("main")
-});
+import('./elm/Main.elm')
+  .then(({ Elm }) => {
+    Elm.Main.init({ node: document.getElementById("main") });
+  });
