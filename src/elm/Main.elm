@@ -1,7 +1,9 @@
 module Main exposing (main)
 
 import Browser
+import Components.Product exposing (Product, renderProductList)
 import Html exposing (..)
+
 
 main : Program () Model Msg
 main =
@@ -13,18 +15,20 @@ main =
         }
 
 
+
 -- MODEL
 
 
 type alias Model =
-    String
+    List Product
 
 
-init : () -> (Model, Cmd Msg)
+init : () -> ( Model, Cmd Msg )
 init _ =
-    ( "Titulo"
+    ( [ Product 312 "Super Mario Odyssey" 197.88 100 "https://upload.wikimedia.org/wikipedia/pt/9/99/Super_Mario_Odyssey_Capa.png" ]
     , Cmd.none
     )
+
 
 
 -- UPDATE
@@ -34,8 +38,7 @@ type Msg
     = NoOp
 
 
-
-update : Msg -> Model -> (Model, Cmd Msg)
+update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
         NoOp ->
@@ -44,16 +47,18 @@ update msg model =
             )
 
 
+
 -- SUBSCRIPTIONS
 
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
-  Sub.none
+    Sub.none
+
 
 
 -- VIEW
 
 
 view model =
-    h1 [] [ text model ]
+    renderProductList model
