@@ -2,6 +2,8 @@ module Components.Product exposing (Product, renderProductList)
 
 import Html exposing (..)
 import Html.Attributes exposing (..)
+import Json.Decode as Decode
+import Json.Decode.Pipeline exposing (optional, required)
 
 
 type alias Product =
@@ -29,3 +31,22 @@ renderProduct model =
 renderProductList : List Product -> Html a
 renderProductList collection =
     div [ class "product-list" ] (List.map renderProduct collection)
+
+
+{-| Decodes JSON into a Product
+-}
+productDecoder : Decode.Decoder Product
+productDecoder =
+    Decode.succeed Product
+        |> required "id" Decode.int
+        |> required "name" Decode.string
+        |> required "price" Decode.float
+        |> optional "score" Decode.int 1
+        |> optional "image" Decode.string "/images/default-product.jpg"
+
+
+{-| Decodes and JSON array into Products
+-}
+productListDecoder : Decode.Decoder (List Product)
+productListDecoder =
+    Decode.list productDecoder
