@@ -8,11 +8,12 @@
     "build": "parcel build --detailed-report --no-source-maps src/index.html"
   },
   "devDependencies": {
-    "autoprefixer": "^9.2.1",
-    "elm": "^0.19.0-bugfix2",
     "node-elm-compiler": "^5.0.1",
-    "parcel-bundler": "^1.10.3",
     "sass": "^1.14.3"
   },
-  "dependencies": {}
+  "dependencies": {
+    "autoprefixer": "^9.3.0",
+    "elm": "^0.19.0-bugfix2",
+    "parcel-bundler": "^1.10.3"
+  }
 }
