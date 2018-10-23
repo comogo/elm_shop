@@ -10,4 +10,4 @@ Developing the [front-end test](https://gist.github.com/giulianovarriale/269f948
 ## Steps to run
 
 1. `yarn install`
-2. `parcel src/index.html`
+2. `yarn run start`
