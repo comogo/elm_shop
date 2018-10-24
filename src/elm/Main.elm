@@ -1,7 +1,7 @@
 module Main exposing (main)
 
 import Browser
-import Components.Product exposing (Product, renderProductList)
+import Components.Product exposing (Product)
 import Html exposing (..)
 
 
@@ -64,4 +64,4 @@ subscriptions model =
 
 
 view model =
-    renderProductList model
+    Components.Product.view model

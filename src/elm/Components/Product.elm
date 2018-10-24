@@ -1,4 +1,4 @@
-module Components.Product exposing (Product, renderProductList)
+module Components.Product exposing (Product, view)
 
 import Html exposing (..)
 import Html.Attributes exposing (..)
@@ -16,8 +16,8 @@ type alias Product =
 
 {-| Renders a single Product as Html
 -}
-renderProduct : Product -> Html a
-renderProduct model =
+render : Product -> Html a
+render model =
     div [ class "product" ]
         [ div [ class "image-container" ] [ img [ src model.image ] [] ]
         , div [ class "product__name" ] [ text model.name ]
@@ -27,6 +27,6 @@ renderProduct model =
 
 {-| Renders a list of Product as Html
 -}
-renderProductList : List Product -> Html a
-renderProductList collection =
-    div [ class "container container--" ] (List.map renderProduct collection)
+view : List Product -> Html a
+view collection =
+    div [ class "container container--" ] (List.map render collection)
