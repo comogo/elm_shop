@@ -2,6 +2,7 @@ module Components.Product exposing (Product, renderProductList)
 
 import Html exposing (..)
 import Html.Attributes exposing (..)
+import Utils exposing(currency)
 
 
 type alias Product =
@@ -20,7 +21,7 @@ renderProduct model =
     div [ class "product" ]
         [ div [ class "image-container" ] [ img [ src model.image ] [] ]
         , div [ class "product__name" ] [ text model.name ]
-        , div [ class "product__price" ] [ text (String.fromFloat model.price) ]
+        , div [ class "product__price" ] [ text (currency model.price) ]
         ]
 
 
