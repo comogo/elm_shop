@@ -2,7 +2,7 @@ module Components.Product exposing (Product, view)
 
 import Html exposing (..)
 import Html.Attributes exposing (..)
-import Utils exposing(currency)
+import Utils exposing (currency)
 
 
 type alias Product =

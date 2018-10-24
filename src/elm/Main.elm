@@ -62,6 +62,7 @@ subscriptions model =
 
 -- VIEW
 
+
 view : Model -> Html msg
 view model =
     Components.Product.view model
