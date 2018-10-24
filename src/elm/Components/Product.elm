@@ -29,4 +29,4 @@ render model =
 -}
 view : List Product -> Html a
 view collection =
-    div [ class "container container--" ] (List.map render collection)
+    div [ class "container" ] (List.map render collection)
