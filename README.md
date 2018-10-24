@@ -1,3 +1,5 @@
+[![Build Status](https://semaphoreci.com/api/v1/comogo/elm_shop/branches/master/shields_badge.svg)](https://semaphoreci.com/comogo/elm_shop)
+
 # Learning Elm + Parcel
 
 Developing the [front-end test](https://gist.github.com/giulianovarriale/269f948dbf18573190ae59410be849b4) in [Elm](https://elm-lang.org) and using [Parcel](https://parceljs.org)
