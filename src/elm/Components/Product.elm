@@ -17,10 +17,10 @@ type alias Product =
 -}
 renderProduct : Product -> Html a
 renderProduct model =
-    div [ class "product-list__item" ]
+    div [ class "product" ]
         [ div [ class "image-container" ] [ img [ src model.image ] [] ]
-        , div [ class "item__name" ] [ text model.name ]
-        , div [ class "item__price" ] [ text (String.fromFloat model.price) ]
+        , div [ class "product__name" ] [ text model.name ]
+        , div [ class "product__price" ] [ text (String.fromFloat model.price) ]
         ]
 
 
@@ -28,4 +28,4 @@ renderProduct model =
 -}
 renderProductList : List Product -> Html a
 renderProductList collection =
-    div [ class "product-list" ] (List.map renderProduct collection)
+    div [ class "container container--" ] (List.map renderProduct collection)
