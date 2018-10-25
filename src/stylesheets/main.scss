@@ -5,14 +5,40 @@ $image-max-width: 200px;
 $product-name-color: #726a6a;
 $product-price-color: #4787df;
 
+$break-small: 425px;
+$break-large: 1024px;
+
+@mixin respond-to($media) {
+  @if $media == mobile {
+    @media only screen and (max-width: $break-small) { @content; }
+  }
+  @else if $media == tablet {
+    @media only screen and (min-width: $break-small + 1) and (max-width: $break-large - 1) { @content;}
+  }
+  @else if $media == desktop {
+    @media only screen and (min-width: $break-large) { @content; }
+  }
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
 .container {
   display: flex;
   flex-flow: row wrap;
+  margin-top: -10px;
+  margin-left: -15px;
+
+  @include respond-to(mobile) {
+    justify-content: center;
+  }
 }
 
 .product {
   width: $item-width;
-  padding: 10px;
+  margin: 25px 15px;
 
   .image-container {
     height: $item-image-height;
@@ -40,7 +66,7 @@ $product-price-color: #4787df;
     text-align: center;
     color: $product-price-color;
     font-size: 18px;
-    font-size: bold;
-    margin: 5px 0;
+    font-weight: bold;
+    padding-top: 5px;
   }
 }
