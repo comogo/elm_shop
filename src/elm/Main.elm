@@ -17,6 +17,14 @@ main =
         }
 
 
+productsMock : List Product
+productsMock =
+    [ Product 1 "Super Mario Odyssey" 197.88 100 "https://upload.wikimedia.org/wikipedia/pt/9/99/Super_Mario_Odyssey_Capa.png"
+    , Product 2 "Super Mario Odyssey" 1970.88 100 "https://upload.wikimedia.org/wikipedia/pt/9/99/Super_Mario_Odyssey_Capa.png"
+    , Product 3 "Super Mario Odyssey" 19.88 100 "https://upload.wikimedia.org/wikipedia/pt/9/99/Super_Mario_Odyssey_Capa.png"
+    ]
+
+
 type alias Product =
     { id : Int
     , name : String
@@ -36,10 +44,7 @@ type alias Model =
 
 init : () -> ( Model, Cmd Msg )
 init _ =
-    ( [ Product 1 "Super Mario Odyssey" 197.88 100 "https://upload.wikimedia.org/wikipedia/pt/9/99/Super_Mario_Odyssey_Capa.png"
-      , Product 2 "Super Mario Odyssey" 1970.88 100 "https://upload.wikimedia.org/wikipedia/pt/9/99/Super_Mario_Odyssey_Capa.png"
-      , Product 3 "Super Mario Odyssey" 19.88 100 "https://upload.wikimedia.org/wikipedia/pt/9/99/Super_Mario_Odyssey_Capa.png"
-      ]
+    ( Model productsMock
     , Cmd.none
     )
 
