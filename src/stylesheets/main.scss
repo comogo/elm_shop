@@ -19,9 +19,17 @@ $break-large: 1024px;
     @media only screen and (min-width: $break-large) { @content; }
   }
 }
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
 .container {
   display: flex;
   flex-flow: row wrap;
+  margin-top: -10px;
+  margin-left: -15px;
 
   @include respond-to(mobile) {
     justify-content: center;
@@ -30,7 +38,7 @@ $break-large: 1024px;
 
 .product {
   width: $item-width;
-  padding: 10px;
+  margin: 25px 15px;
 
   .image-container {
     height: $item-image-height;
@@ -58,7 +66,7 @@ $break-large: 1024px;
     text-align: center;
     color: $product-price-color;
     font-size: 18px;
-    margin: 5px 0;
     font-weight: bold;
+    padding-top: 5px;
   }
 }
