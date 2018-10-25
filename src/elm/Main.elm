@@ -17,6 +17,14 @@ main =
         }
 
 
+productsMock : List Product
+productsMock =
+    [ Product 1 "Super Mario Odyssey" 197.88 100 "https://upload.wikimedia.org/wikipedia/pt/9/99/Super_Mario_Odyssey_Capa.png"
+    , Product 2 "Super Mario Odyssey" 1970.88 100 "https://upload.wikimedia.org/wikipedia/pt/9/99/Super_Mario_Odyssey_Capa.png"
+    , Product 3 "Super Mario Odyssey" 19.88 100 "https://upload.wikimedia.org/wikipedia/pt/9/99/Super_Mario_Odyssey_Capa.png"
+    ]
+
+
 type alias Product =
     { id : Int
     , name : String
@@ -31,15 +39,14 @@ type alias Product =
 
 
 type alias Model =
-    List Product
+    { products : List Product
+    , hoveredProduct : Maybe Product
+    }
 
 
 init : () -> ( Model, Cmd Msg )
 init _ =
-    ( [ Product 1 "Super Mario Odyssey" 197.88 100 "https://upload.wikimedia.org/wikipedia/pt/9/99/Super_Mario_Odyssey_Capa.png"
-      , Product 2 "Super Mario Odyssey" 1970.88 100 "https://upload.wikimedia.org/wikipedia/pt/9/99/Super_Mario_Odyssey_Capa.png"
-      , Product 3 "Super Mario Odyssey" 19.88 100 "https://upload.wikimedia.org/wikipedia/pt/9/99/Super_Mario_Odyssey_Capa.png"
-      ]
+    ( Model productsMock Nothing
     , Cmd.none
     )
 
@@ -50,6 +57,8 @@ init _ =
 
 type Msg
     = NoOp
+    | MouseOverProduct Product
+    | MouseOutProduct Product
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -57,6 +66,16 @@ update msg model =
     case msg of
         NoOp ->
             ( model
+            , Cmd.none
+            )
+
+        MouseOverProduct product ->
+            ( { model | hoveredProduct = Just product }
+            , Cmd.none
+            )
+
+        MouseOutProduct _ ->
+            ( { model | hoveredProduct = Nothing }
             , Cmd.none
             )
 
@@ -76,15 +95,54 @@ subscriptions model =
 
 {-| Renders a single Product as Html
 -}
-viewProduct : Product -> Html Msg
-viewProduct model =
-    div [ class "product" ]
-        [ div [ class "image-container" ] [ img [ src model.image ] [] ]
-        , div [ class "product__name" ] [ text model.name ]
-        , div [ class "product__price" ] [ text (Utils.currency model.price) ]
+viewProduct : Product -> Maybe Product -> Html Msg
+viewProduct model hovered =
+    let
+        image : Html Msg
+        image =
+            div [ class "image-container" ] [ img [ src model.image ] [] ]
+
+        completeInfo : List (Html Msg)
+        completeInfo =
+            [ div [ class "product__name" ] [ text model.name ]
+            , div
+                [ class "product__price" ]
+                [ text (Utils.currency model.price) ]
+            ]
+
+        addToCart : List (Html Msg)
+        addToCart =
+            [ div
+                [ class "product__add-to-cart" ]
+                [ text "adicionar ao carrinho" ]
+            ]
+
+        info : List (Html Msg)
+        info =
+            case hovered of
+                Nothing ->
+                    completeInfo
+
+                Just p ->
+                    if p.id == model.id then
+                        addToCart
+
+                    else
+                        completeInfo
+    in
+    div
+        [ class "product"
+        , onMouseOver (MouseOverProduct model)
+        , onMouseOut (MouseOutProduct model)
         ]
+        (image :: info)
 
 
 view : Model -> Html Msg
 view model =
-    div [ class "container" ] (List.map viewProduct model)
+    div
+        [ class "container" ]
+        (List.map
+            (\p -> viewProduct p model.hoveredProduct)
+            model.products
+        )

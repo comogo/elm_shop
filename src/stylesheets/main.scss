@@ -1,4 +1,5 @@
 $item-width: 262px;
+$item-height: 150px;
 $item-image-height: 230px;
 $image-max-width: 200px;
 
@@ -38,6 +39,7 @@ body {
 
 .product {
   width: $item-width;
+  height: $item-height;
   margin: 25px 15px;
 
   .image-container {
@@ -47,7 +49,6 @@ body {
     padding: 25px 0;
     box-sizing: border-box;
     border-radius: 3px;
-    margin-bottom: 10px;
 
     img {
       max-width: 100%;
@@ -55,11 +56,17 @@ body {
     }
   }
 
+  &:hover {
+    cursor: pointer;
+  }
+
   &__name {
     text-align: center;
     color: $product-name-color;
     font-size: 18px;
-    margin: 5px 0;
+    padding-top: 15px;
+    padding-bottom: 0;
+    margin: 0;
   }
 
   &__price {
@@ -68,5 +75,13 @@ body {
     font-size: 18px;
     font-weight: bold;
     padding-top: 5px;
+  }
+
+  &__add-to-cart {
+    padding-top: 27px;
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+    color: $product-price-color;
   }
 }
