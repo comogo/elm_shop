@@ -1,8 +1,10 @@
 module Main exposing (main)
 
 import Browser
-import Components.Product exposing (Product)
 import Html exposing (..)
+import Html.Attributes exposing (class, src)
+import Html.Events exposing (..)
+import Utils
 
 
 main : Program () Model Msg
@@ -15,6 +17,15 @@ main =
         }
 
 
+type alias Product =
+    { id : Int
+    , name : String
+    , price : Float
+    , score : Int
+    , image : String
+    }
+
+
 
 -- MODEL
 
@@ -25,9 +36,9 @@ type alias Model =
 
 init : () -> ( Model, Cmd Msg )
 init _ =
-    ( [ Product 312 "Super Mario Odyssey" 197.88 100 "https://upload.wikimedia.org/wikipedia/pt/9/99/Super_Mario_Odyssey_Capa.png"
-      , Product 312 "Super Mario Odyssey" 197.88 100 "https://upload.wikimedia.org/wikipedia/pt/9/99/Super_Mario_Odyssey_Capa.png"
-      , Product 312 "Super Mario Odyssey" 197.88 100 "https://upload.wikimedia.org/wikipedia/pt/9/99/Super_Mario_Odyssey_Capa.png"
+    ( [ Product 1 "Super Mario Odyssey" 197.88 100 "https://upload.wikimedia.org/wikipedia/pt/9/99/Super_Mario_Odyssey_Capa.png"
+      , Product 2 "Super Mario Odyssey" 1970.88 100 "https://upload.wikimedia.org/wikipedia/pt/9/99/Super_Mario_Odyssey_Capa.png"
+      , Product 3 "Super Mario Odyssey" 19.88 100 "https://upload.wikimedia.org/wikipedia/pt/9/99/Super_Mario_Odyssey_Capa.png"
       ]
     , Cmd.none
     )
@@ -63,6 +74,17 @@ subscriptions model =
 -- VIEW
 
 
-view : Model -> Html msg
+{-| Renders a single Product as Html
+-}
+viewProduct : Product -> Html Msg
+viewProduct model =
+    div [ class "product" ]
+        [ div [ class "image-container" ] [ img [ src model.image ] [] ]
+        , div [ class "product__name" ] [ text model.name ]
+        , div [ class "product__price" ] [ text (Utils.currency model.price) ]
+        ]
+
+
+view : Model -> Html Msg
 view model =
-    Components.Product.view model
+    div [ class "container" ] (List.map viewProduct model)
