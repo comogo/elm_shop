@@ -218,6 +218,21 @@ viewSelectSort model =
             ]
         , showList
         ]
+
+
+viewEmptyCart : Html Msg
+viewEmptyCart =
+    div [ class "cart cart--empty" ]
+        [ div [ class "cart__title" ] [ text "Carrinho" ]
+        , div [ class "cart__icon" ] []
+        , div [ class "cart__info" ]
+            [ text "Até o momento,"
+            , br [] []
+            , text "seu carrinho está vazio"
+            ]
+        ]
+
+
 view : Model -> Html Msg
 view model =
     div [ class "main" ]
@@ -232,4 +247,5 @@ view model =
                     model.products
                 )
             ]
+        , div [ class "aside" ] [ viewEmptyCart ]
         ]
