@@ -34,6 +34,12 @@ type alias Product =
     }
 
 
+type SortTypes
+    = Price
+    | Popularity
+    | Alphabetic
+
+
 
 -- MODEL
 
@@ -41,12 +47,14 @@ type alias Product =
 type alias Model =
     { products : List Product
     , hoveredProduct : Maybe Product
+    , sortBy : SortTypes
+    , openedSelectSort : Bool
     }
 
 
 init : () -> ( Model, Cmd Msg )
 init _ =
-    ( Model productsMock Nothing
+    ( Model productsMock Nothing Popularity False
     , Cmd.none
     )
 
@@ -59,6 +67,9 @@ type Msg
     = NoOp
     | MouseOverProduct Product
     | MouseOutProduct Product
+    | ToggleSelectSort
+    | CloseSelectorSort
+    | SelectSortType SortTypes
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -76,6 +87,21 @@ update msg model =
 
         MouseOutProduct _ ->
             ( { model | hoveredProduct = Nothing }
+            , Cmd.none
+            )
+
+        ToggleSelectSort ->
+            ( { model | openedSelectSort = not model.openedSelectSort }
+            , Cmd.none
+            )
+
+        CloseSelectorSort ->
+            ( { model | openedSelectSort = False }
+            , Cmd.none
+            )
+
+        SelectSortType t ->
+            ( { model | openedSelectSort = False, sortBy = t }
             , Cmd.none
             )
 
@@ -138,11 +164,72 @@ viewProduct model hovered =
         (image :: info)
 
 
+viewSelectSort : Model -> Html Msg
+viewSelectSort model =
+    let
+        showItem : SortTypes -> Html Msg
+        showItem a =
+            div
+                [ class "select-sort__item"
+                , onClick (SelectSortType a)
+                ]
+                [ text (typeTranslation a) ]
+
+        showList : Html Msg
+        showList =
+            if model.openedSelectSort then
+                div
+                    [ class "select-sort__list" ]
+                    (List.map
+                        showItem
+                        [ Price, Popularity, Alphabetic ]
+                    )
+
+            else
+                text ""
+
+        selectClass : String
+        selectClass =
+            if model.openedSelectSort then
+                "select-sort__selected select-sort__selected--opened"
+
+            else
+                "select-sort__selected"
+
+        typeTranslation : SortTypes -> String
+        typeTranslation a =
+            case a of
+                Price ->
+                    "Preço"
+
+                Popularity ->
+                    "Popularidade"
+
+                Alphabetic ->
+                    "Alfabética"
+    in
+    div [ class "select-sort", onMouseLeave CloseSelectorSort ]
+        [ div
+            [ class selectClass
+            , onClick ToggleSelectSort
+            ]
+            [ div [] [ text (typeTranslation model.sortBy) ]
+            , div [ class "select-sort__icon" ] []
+            ]
+        , showList
+        ]
 view : Model -> Html Msg
 view model =
-    div
-        [ class "container" ]
-        (List.map
-            (\p -> viewProduct p model.hoveredProduct)
-            model.products
-        )
+    div [ class "main" ]
+        [ div [ class "content" ]
+            [ div [ class "header" ]
+                [ h1 [] [ text "Games" ]
+                , viewSelectSort model
+                ]
+            , div [ class "container" ]
+                (List.map
+                    (\p -> viewProduct p model.hoveredProduct)
+                    model.products
+                )
+            ]
+        ]
