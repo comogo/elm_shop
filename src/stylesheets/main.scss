@@ -1,29 +1,59 @@
 $item-width: 262px;
-$item-height: 150px;
+$item-height: 285px;
 $item-image-height: 230px;
 $image-max-width: 200px;
 
-$product-name-color: #726a6a;
-$product-price-color: #4787df;
+$product-name-color: #746A6A;
+$product-price-color: #3486E6;
 
-$break-small: 425px;
-$break-large: 1024px;
+@import 'mixin.scss';
+@import 'select.scss';
 
-@mixin respond-to($media) {
-  @if $media == mobile {
-    @media only screen and (max-width: $break-small) { @content; }
-  }
-  @else if $media == tablet {
-    @media only screen and (min-width: $break-small + 1) and (max-width: $break-large - 1) { @content;}
-  }
-  @else if $media == desktop {
-    @media only screen and (min-width: $break-large) { @content; }
-  }
+html {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 16px;
 }
 
 body {
   margin: 0;
   padding: 0;
+  min-width: 627px;
+}
+
+.main {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+  padding-top: 55px;
+  padding-left: 35px;
+  padding-right: 35px;
+}
+
+.content {
+  width: calc(100% - 292px);
+  max-width: 847px;
+}
+
+.header {
+  display: flex;
+  flex-flow: row wrap;
+  margin-bottom: 15px;
+  justify-content: space-between;
+
+  @include respond-to(mobile) {
+    flex-flow: column wrap;
+    align-items: center;
+  }
+
+  h1 {
+    margin: 0;
+    padding: 0;
+    font-size: 48px;
+    font-weight: 600;
+    line-height: 38px;
+
+    @include respond-to(mobile) { margin-bottom: 15px; }
+  }
 }
 
 .container {
@@ -31,6 +61,7 @@ body {
   flex-flow: row wrap;
   margin-top: -10px;
   margin-left: -15px;
+  margin-right: -15px;
 
   @include respond-to(mobile) {
     justify-content: center;
