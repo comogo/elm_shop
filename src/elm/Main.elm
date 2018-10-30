@@ -5,6 +5,7 @@ import Html exposing (..)
 import Html.Attributes exposing (class, src)
 import Html.Events exposing (..)
 import Utils
+import Ui.Select
 
 
 main : Program () Model Msg
@@ -34,27 +35,27 @@ type alias Product =
     }
 
 
-type SortTypes
-    = Price
-    | Popularity
-    | Alphabetic
-
-
-
 -- MODEL
 
 
 type alias Model =
     { products : List Product
     , hoveredProduct : Maybe Product
-    , sortBy : SortTypes
-    , openedSelectSort : Bool
+    , sortSelect : Ui.Select.Model
     }
 
 
 init : () -> ( Model, Cmd Msg )
 init _ =
-    ( Model productsMock Nothing Popularity False
+    ( { products = productsMock
+      , hoveredProduct = Nothing
+      , sortSelect =
+          Ui.Select.init ()
+              |> Ui.Select.addOption({ label = "Preço", value = "price" })
+              |> Ui.Select.addOption({ label = "Popularidade", value = "popularity" })
+              |> Ui.Select.addOption({ label = "Nome", value = "name" })
+              |> Ui.Select.select("price")
+      }
     , Cmd.none
     )
 
@@ -67,9 +68,7 @@ type Msg
     = NoOp
     | MouseOverProduct Product
     | MouseOutProduct Product
-    | ToggleSelectSort
-    | CloseSelectorSort
-    | SelectSortType SortTypes
+    | Sort Ui.Select.Msg
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -90,21 +89,12 @@ update msg model =
             , Cmd.none
             )
 
-        ToggleSelectSort ->
-            ( { model | openedSelectSort = not model.openedSelectSort }
-            , Cmd.none
-            )
+        Sort msg_ ->
+            let
+                ( select, cmd ) = Ui.Select.update msg_ model.sortSelect
 
-        CloseSelectorSort ->
-            ( { model | openedSelectSort = False }
-            , Cmd.none
-            )
-
-        SelectSortType t ->
-            ( { model | openedSelectSort = False, sortBy = t }
-            , Cmd.none
-            )
-
+            in
+                ( { model | sortSelect = select }, Cmd.map Sort cmd )
 
 
 -- SUBSCRIPTIONS
@@ -164,62 +154,6 @@ viewProduct model hovered =
         (image :: info)
 
 
-viewSelectSort : Model -> Html Msg
-viewSelectSort model =
-    let
-        showItem : SortTypes -> Html Msg
-        showItem a =
-            div
-                [ class "select-sort__item"
-                , onClick (SelectSortType a)
-                ]
-                [ text (typeTranslation a) ]
-
-        showList : Html Msg
-        showList =
-            if model.openedSelectSort then
-                div
-                    [ class "select-sort__list" ]
-                    (List.map
-                        showItem
-                        [ Price, Popularity, Alphabetic ]
-                    )
-
-            else
-                text ""
-
-        selectClass : String
-        selectClass =
-            if model.openedSelectSort then
-                "select-sort__selected select-sort__selected--opened"
-
-            else
-                "select-sort__selected"
-
-        typeTranslation : SortTypes -> String
-        typeTranslation a =
-            case a of
-                Price ->
-                    "Preço"
-
-                Popularity ->
-                    "Popularidade"
-
-                Alphabetic ->
-                    "Alfabética"
-    in
-    div [ class "select-sort", onMouseLeave CloseSelectorSort ]
-        [ div
-            [ class selectClass
-            , onClick ToggleSelectSort
-            ]
-            [ div [] [ text (typeTranslation model.sortBy) ]
-            , div [ class "select-sort__icon" ] []
-            ]
-        , showList
-        ]
-
-
 viewEmptyCart : Html Msg
 viewEmptyCart =
     div [ class "cart cart--empty" ]
@@ -239,7 +173,7 @@ view model =
         [ div [ class "content" ]
             [ div [ class "header" ]
                 [ h1 [] [ text "Games" ]
-                , viewSelectSort model
+                , Html.map Sort (Ui.Select.view model.sortSelect)
                 ]
             , div [ class "container" ]
                 (List.map
